@@ -100,6 +100,7 @@
     "boxen": "^5.1.2",
     "catch-exit": "^1.2.2",
     "chalk": "~4.1.2",
+    "chrome-aws-lambda": "10.1.0",
     "chrome-launcher": "^0.15.2",
     "execa": "^5.1.1",
     "file-type": "~16.5.4",
