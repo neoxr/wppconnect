@@ -22,8 +22,8 @@ import * as rimraf from 'rimraf';
 import * as waVersion from '@wppconnect/wa-version';
 import axios from 'axios';
 import { Browser, BrowserContext, Page } from 'puppeteer';
+import chrome from 'chrome-aws-lambda'
 import puppeteer from 'puppeteer-extra';
-import chrome from 'chrome-aws-lambda';
 import { CreateConfig } from '../config/create-config';
 import { puppeteerConfig } from '../config/puppeteer.config';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
