@@ -4,28 +4,6 @@
   "description": "WPPConnect is an open source project developed by the JavaScript community with the aim of exporting functions from WhatsApp Web to the node, which can be used to support the creation of any interaction, such as customer service, media sending, intelligence recognition based on phrases artificial and many other things, use your imagination... 😀🤔💭",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "scripts": {
-    "build:client": "tsc",
-    "build:wapi": "cd src/lib/wapi/ && webpack",
-    "build": "npm run build:wapi && npm run build:client",
-    "changelog:last": "conventional-changelog -p angular -r 2",
-    "changelog:preview": "conventional-changelog -p angular -u",
-    "changelog:update": "conventional-changelog -p angular -i CHANGELOG.md -s",
-    "clean": "shx rm -rf session dist",
-    "example": "node ./examples/basic/index.js",
-    "commit": "cz",
-    "docs:build": "npm run docs:clean && typedoc && npm run docs:copy-images",
-    "docs:clean": "shx rm -rf api-docs",
-    "docs:copy-images": "shx cp -R ./img ./api-docs",
-    "lint:js": "npx eslint -c .eslintrc.js --ext .js src",
-    "lint:ts": "npx eslint -c .eslintrc.js --ext .ts src",
-    "lint": "npm run lint:ts && npm run lint:js",
-    "prepare": "husky install && npm run clean && npm run build",
-    "release": "release-it",
-    "start": "npm run build:client && tsc app.ts && node app.js",
-    "test": "mocha -r ts-node/register src/tests/**/*.test.ts",
-    "watch": "concurrently \"npm run build:wapi -- --mode=development -w -d eval-source-map\" \"npm run build:client -- -w --sourceMap\""
-  },
   "config": {
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
