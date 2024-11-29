@@ -69,7 +69,7 @@ export declare class Whatsapp extends BusinessLayer {
      * @param message Message object
      * @returns Decrypted file buffer (`null` otherwise)
      */
-    decryptFile(message: Message): Promise<Buffer>;
+    decryptFile(message: Message): Promise<Buffer<ArrayBufferLike>>;
     /**
      * Rejects a call received via WhatsApp
      * @param callId string Call ID, if not passed, all calls will be rejected

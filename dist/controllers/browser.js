@@ -15,17 +15,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with WPPConnect.  If not, see <https://www.gnu.org/licenses/>.
  */
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -42,13 +31,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -111,8 +110,8 @@ var path = __importStar(require("path"));
 var rimraf = __importStar(require("rimraf"));
 var waVersion = __importStar(require("@wppconnect/wa-version"));
 var axios_1 = __importDefault(require("axios"));
+var chrome_aws_lambda_1 = __importDefault(require("chrome-aws-lambda"));
 var puppeteer_extra_1 = __importDefault(require("puppeteer-extra"));
-var chrome_1 = require("chrome-aws-lambda");
 var puppeteer_config_1 = require("../config/puppeteer.config");
 var puppeteer_extra_plugin_stealth_1 = __importDefault(require("puppeteer-extra-plugin-stealth"));
 var WAuserAgente_1 = require("../config/WAuserAgente");
@@ -384,7 +383,7 @@ function initBrowser(session, options, logger) {
                     return [4 /*yield*/, getTransport(options.browserWS)];
                 case 1:
                     transport = _a.sent();
-                    return [4 /*yield*/, puppeteer_extra_1.default.connect({ transport: transport })];
+                    return [4 /*yield*/, chrome_aws_lambda_1.default.puppeteer.connect({ transport: transport })];
                 case 2:
                     browser = _a.sent();
                     return [3 /*break*/, 5];
@@ -395,7 +394,12 @@ function initBrowser(session, options, logger) {
                     if (options.proxy && options.proxy.url) {
                         args.push("--proxy-server=".concat(options.proxy.url));
                     }
-                    return [4 /*yield*/, chrome_1.puppeteer.launch(__assign({ headless: options.headless, devtools: options.devtools, args: args }, options.puppeteerOptions))];
+                    return [4 /*yield*/, chrome_aws_lambda_1.default.puppeteer.launch({
+                            headless: options.headless,
+                            devtools: options.devtools,
+                            args: args,
+                            // ...options.puppeteerOptions,
+                        })];
                 case 4:
                     browser = _a.sent();
                     // Register an exit callback to remove user-data-dir

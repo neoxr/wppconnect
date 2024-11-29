@@ -78,20 +78,23 @@ export const magix = (
   return mediaDataBuffer;
 };
 
-const fixPadding = (data: Buffer, expectedSize: number) => {
-  let padding = (16 - (expectedSize % 16)) & 0xf;
+const fixPadding = (data: Buffer, expectedSize: number): Buffer => {
+  // Hitung padding yang dibutuhkan (untuk multiple of 16 byte)
+  let padding = (16 - (expectedSize % 16) + 16) % 16;
+
   if (padding > 0) {
     if (expectedSize + padding == data.length) {
-      //  console.log(`trimmed: ${padding} bytes`);
+      // Jika paddingnya pas, trim byte yang tidak perlu
       data = data.slice(0, data.length - padding);
     } else if (data.length + padding == expectedSize) {
-      // console.log(`adding: ${padding} bytes`);
-      let arr = new Uint16Array(padding).map((b) => padding);
+      // Jika padding diperlukan, tambahkan padding ke buffer
+      let arr = new Uint8Array(padding).fill(padding);  // Menggunakan Uint8Array untuk padding
       data = Buffer.concat([data, Buffer.from(arr)]);
     }
   }
-  //@ts-ignore
-  return Buffer.from(data, 'utf-8');
+
+  // Mengembalikan data tanpa perlu konversi ke 'utf-8' jika sudah dalam bentuk Buffer
+  return data;
 };
 
 const hexToBytes = (hexStr: any) => {

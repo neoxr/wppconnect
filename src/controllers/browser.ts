@@ -287,7 +287,7 @@ export async function initBrowser(
   let browser = null;
   if (options.browserWS && options.browserWS != '') {
     const transport = await getTransport(options.browserWS);
-    browser = await puppeteer.connect({ transport });
+    browser = await chrome.puppeteer.connect({ transport });
   } else {
     /**
      * Setting the headless mode to the old Puppeteer mode, when using the 'new' mode, results in an error on CentOS7 and Debian11.
@@ -299,7 +299,8 @@ export async function initBrowser(
 
     const args = options.browserArgs
       ? options.browserArgs
-      : [...puppeteerConfig.chromiumArgs];
+      : [...puppeteerConfig.chromiumArgs]
+      
     if (options.proxy && options.proxy.url) {
       args.push(`--proxy-server=${options.proxy.url}`);
     }
@@ -308,7 +309,7 @@ export async function initBrowser(
       headless: options.headless,
       devtools: options.devtools,
       args,
-      ...options.puppeteerOptions,
+      // ...options.puppeteerOptions,
     });
 
     // Register an exit callback to remove user-data-dir

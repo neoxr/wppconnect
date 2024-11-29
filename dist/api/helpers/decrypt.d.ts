@@ -18,4 +18,4 @@ export declare const mediaTypes: {
     DOCUMENT: string;
     STICKER: string;
 };
-export declare const magix: (fileData: any, mediaKeyBase64: any, mediaType: any, expectedSize?: number) => Buffer;
+export declare const magix: (fileData: any, mediaKeyBase64: any, mediaType: any, expectedSize?: number) => Buffer<ArrayBufferLike>;
