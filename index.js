@@ -1,4 +1,5 @@
-const WhatsApp = require('./ev')
+const { Component } = require('./lib')
+const { WhatsApp } = new Component
 
 const { exec } = require('child_process')
 const { promisify } = require('util')
@@ -9,6 +10,7 @@ const connect = async () => {
    const client = new WhatsApp({
       session: 'session',
       // number: '6282258694977',
+      logger: 'silent',
       puppeteer: {
          args: null,
          options: {
@@ -17,7 +19,7 @@ const connect = async () => {
       }
    })
 
-   client.register('error', ctx => console.log)
+   client.register('error', ctx => console.log(ctx))
 
    client.register('connect', ctx => {
       console.log(ctx.qr)

@@ -4,15 +4,16 @@ const { exec } = require('child_process')
 const { promisify } = require('util')
 
 const connect = async () => {
-   // const { stdout: chromiumPath } = await promisify(exec)('which chromium')
+   const { stdout: chromiumPath } = await promisify(exec)('which chromium')
 
    const client = new WhatsApp({
       session: 'session',
       // number: '6282258694977',
+      logger: 'silent',
       puppeteer: {
          args: null,
          options: {
-            // executablePath: chromiumPath.trim()
+            executablePath: chromiumPath.trim()
          }
       }
    })
