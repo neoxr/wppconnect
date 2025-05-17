@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events'
 import { create, defaultLogger, CreateConfig, Whatsapp } from '@wppconnect-team/wppconnect'
+import Message from './message'
 
 type ListenerRegistryItem = {
    callCount: number
@@ -130,6 +131,7 @@ export default class WhatsApp extends EventEmitter {
          if (!this.ev) return
 
          this.ev.onMessage(message => {
+            (new Message).createMessageFunction(this.ev)
             this.emit('message', message)
          })
 
