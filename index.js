@@ -1,17 +1,25 @@
 const wppconnect = require('@wppconnect-team/wppconnect');
 const { exec } = require('child_process')
 const { promisify } = require('util')
-wppconnect.defaultLogger.level = 'http';
+// wppconnect.defaultLogger.level = 'info';
+wppconnect.defaultLogger.transports.forEach((t) => (t.silent = true));
 
 const connect = async () => {
-   // const { stdout: chromiumPath } = await promisify(exec)('which chromium')
+   const { stdout: chromiumPath } = await promisify(exec)('which chromium')
    wppconnect
       .create({
+         session: 'sessionName',
          phoneNumber: '6282258694977',
          catchLinkCode: (str) => console.log('Code: ' + str),
+         statusFind: (statusSession, session) => {
+            console.log('Status Session: ', statusSession); //return isLogged || notLogged || browserClose || qrReadSuccess || qrReadFail || autocloseCalled || desconnectedMobile || deleteToken
+            //Create session wss return "serverClose" case server for close
+            console.log('Session name: ', session);
+         },
          headless: true,
          devtools: false,
          useChrome: false,
+         debug: false,
          browserArgs: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
@@ -31,7 +39,7 @@ const connect = async () => {
             '--disable-translate'
          ],
          puppeteerOptions: {
-            // executablePath: chromiumPath.trim()
+            executablePath: chromiumPath.trim()
          },
       })
       .then((client) => start(client))
