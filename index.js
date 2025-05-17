@@ -8,7 +8,7 @@ const connect = async () => {
 
    const client = new WhatsApp({
       session: 'session',
-      number: '6282258694977',
+      // number: '6282258694977',
       puppeteer: {
          args: null,
          options: {
