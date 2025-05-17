@@ -1,9 +1,9 @@
 "use strict";
 const EventEmitter = require('events').EventEmitter
-const wppconnect = require('@wppconnect-team/wppconnect');
+const wppconnect = require('@wppconnect-team/wppconnect')
 const { exec } = require('child_process')
 const { promisify } = require('util')
-wppconnect.defaultLogger.level = 'http'
+// wppconnect.defaultLogger.level = 'http'
 wppconnect.defaultLogger.transports.forEach((t) => (t.silent = true))
 
 
@@ -54,13 +54,19 @@ module.exports = class WhatsApp extends EventEmitter {
             session: this.args?.session || 'session',
             ...(this.args?.number ? {
                phoneNumber: String(this.args.number),
-               catchLinkCode: code => this.emit('connect', { attempts: null, qr: null, base64: null, code: code?.match(/.{1,4}/g).join('-') || code })
+               catchLinkCode: code => {
+                  this.emit('connect', { attempts: null, qr: null, base64: null, code: code?.match(/.{1,4}/g).join('-') || code })
+               }
             } : {
                catchQR: (base64Qrimg, asciiQR, attempts, urlCode) => {
                   this.emit('connect', { attempts, qr: asciiQR, base64: base64Qrimg, code: null })
                }
             }),
             statusFind: (statusSession, session) => {
+               if (statusSession === 'serverClose') {
+                  this.emit('status', { statusSession, session })
+                  this.create()
+               }
                this.emit('status', { statusSession, session })
             },
             headless: true,
@@ -88,8 +94,40 @@ module.exports = class WhatsApp extends EventEmitter {
             puppeteerOptions: this.args?.puppeteer?.options || {},
             ...this.options
          })
+
+         this.start(this.connection)
+
+         // .then((client) => {
+         //    this.connection = client
+         //    client.onMessage = (message) => {
+         //       console.log({message})
+         //       this.emit('message', message)
+         //    }
+
+         //    this.connection.onAck = (message) => {
+         //       this.emit('ack', message)
+         //    }
+
+         //    this.connection.onAckError = (message) => {
+         //       this.emit('ackError', message)
+         //    }
+
+         //    this.connection.onIncomingCall = (call) => {
+         //       this.emit('incomingCall', call)
+         //    }
+         // })
       } catch (e) {
          this.emit('error', { message: e.message })
       }
+   }
+
+   start = client => {
+      client.onMessage(message => {
+         this.emit('message', message)
+      })
+
+      client.onAck(message => {
+         this.emit('ack', message)
+      })
    }
 }

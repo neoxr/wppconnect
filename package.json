@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@wppconnect-team/wppconnect": "^1.37.1"
+    "@wppconnect-team/wppconnect": "^1.37.1",
+    "syntax-error": "^1.4.0"
   }
 }
