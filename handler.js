@@ -25,6 +25,7 @@ const texted = (type, text) => {
 
 module.exports = async (client, m) => {
    const body = m.body
+   client.reply(m.from, 'Hi', m)
    if (typeof body === 'object') return
    let command, text
    let x = body && body.trim().split`\n`,

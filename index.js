@@ -27,7 +27,7 @@ const connect = async () => {
 
    client.register('status', ctx => console.log(ctx))
    client.register('message', async ctx => {
-      await require('./handler')(client.connection, ctx)
+      await require('./handler')(client.ev, ctx)
    })
    // client.on('ack', ctx => console.log(ctx))
    client.register('ackError', ctx => console.log)
