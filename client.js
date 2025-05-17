@@ -8,7 +8,7 @@ const connect = async () => {
 
    const client = new WhatsApp({
       session: 'session',
-      // number: 6282258694977,
+      // number: '6282258694977',
       puppeteer: {
          args: null,
          options: {
@@ -19,11 +19,17 @@ const connect = async () => {
 
    client.register('error', ctx => console.log)
 
-   client.register('status', ctx => console.log)
-
-   client.register('connect', data => {
-      console.log(data.qr)
+   client.register('connect', ctx => {
+      console.log(ctx.qr)
    })
+
+   client.register('status', ctx => console.log(ctx))
+   client.register('message', async ctx => {
+      await require('./handler')(client.connection, ctx)
+   })
+   // client.on('ack', ctx => console.log(ctx))
+   client.register('ackError', ctx => console.log)
+   client.register('incomingCall', ctx => console.log)
 }
 
 connect().catch(() => connect())
