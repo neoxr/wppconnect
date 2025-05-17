@@ -1,0 +1,5 @@
+2025/05/17-03:02:05.098 12fa5 Reusing MANIFEST /home/user/maintainer/wppconnect/tokens/session/Default/Local Storage/leveldb/MANIFEST-000001
+2025/05/17-03:02:05.125 12fa5 Recovering log #4
+2025/05/17-03:02:05.125 12fa5 Level-0 table #6: started
+2025/05/17-03:02:05.134 12fa5 Level-0 table #6: 10539 bytes OK
+2025/05/17-03:02:05.156 12fa5 Delete type=0 #4
