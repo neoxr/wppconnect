@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events'
-import wppconnect, { CreateConfig, Whatsapp } from '@wppconnect-team/wppconnect'
+import { create, defaultLogger, CreateConfig, Whatsapp } from '@wppconnect-team/wppconnect'
 
 type ListenerRegistryItem = {
    callCount: number
@@ -24,9 +24,6 @@ export default class WhatsApp extends EventEmitter {
       this.init()
    }
 
-   /**
-    * Register a custom event listener with limited calls and optional reset
-    */
    register(event: string, handler: (...args: any[]) => void, maxCalls = 2, resetAfter = true) {
       if (!this.listenerRegistry.has(event)) {
          const listener = this._createListener(event, handler, maxCalls, resetAfter)
@@ -64,9 +61,9 @@ export default class WhatsApp extends EventEmitter {
 
    init = async () => {
       if (this.args?.logger === 'silent') {
-         wppconnect.defaultLogger.transports.forEach(t => (t.silent = true))
+         defaultLogger.transports.forEach(t => (t.silent = true))
       } else {
-         wppconnect.defaultLogger.level = this.args?.logger
+         defaultLogger.level = this.args?.logger
       }
 
       await this.create()
@@ -74,7 +71,7 @@ export default class WhatsApp extends EventEmitter {
 
    create = async () => {
       try {
-         this.ev = await wppconnect.create({
+         this.ev = await create({
             session: this.args?.session || 'session',
             ...(this.args?.number ? {
                phoneNumber: String(this.args.number),
